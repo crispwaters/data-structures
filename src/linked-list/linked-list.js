@@ -51,9 +51,8 @@ export class LinkedList {
     const element = new Element(val)
     if (!this.#head) this.#head = element
     if (this.#tail) {
-      const cursor = this.#tail
-      cursor.next = element
-      element.prev = cursor
+      this.#tail.next = element
+      element.prev = this.#tail
     }
     this.#tail = element
     this.#count++
@@ -124,6 +123,56 @@ export class LinkedList {
     this.#removeElement(cursor)
     return true
   }
+
+  // #region Stack Functions
+  /**
+   * Appends element to end of list
+   * @param {any} val Value to add
+   */
+  push (val) {
+    this.add(val)
+  }
+
+  /**
+   * Returns the value at the end of the list
+   * @returns {any} value of last element in list
+   */
+  peek () {
+    return this.#tail?.val
+  }
+
+  /**
+   * Remove and return last value of the list
+   * @returns {any} value of last element in list
+   */
+  pop () {
+    if (!this.#tail) return
+    const toReturn = this.#tail.val
+    this.#removeElement(this.#tail)
+    return toReturn
+  }
+  // #endregion
+
+  // #region Queue Functions
+  /**
+   * Appends element to end of list
+   * @param {any} val value to add
+   */
+  enqueue (val) {
+    this.add(val)
+  }
+
+  /**
+   * Remove and return first value of the list
+   * @returns {any} value of first element in list
+   */
+  dequeue () {
+    if (!this.#head) return
+    const toReturn = this.#head.val
+    this.#removeElement(this.#head)
+    return toReturn
+  }
+  // #endregion
 
   /**
    * Removes the provided element from the list
