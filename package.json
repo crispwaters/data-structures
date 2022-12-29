@@ -1,0 +1,14 @@
+{
+  "name": "data-structures",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "standard && ava"
+  },
+  "devDependencies": {
+    "ava": "^5.1.0",
+    "standard": "^17.0.0"
+  }
+}
