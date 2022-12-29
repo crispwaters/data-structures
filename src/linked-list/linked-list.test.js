@@ -62,12 +62,21 @@ test('LinkedList.removeAll removes all occurances of provided criteria', t => {
   t.deepEqual(list.toArray(), [2, 'foo', 'bar', 4])
 })
 
+test('LinkedList.add works after all elements have been removed', t => {
+  const arr = [1, 2, 'foo', 'bar', 3, 4]
+  const list = new LinkedList(arr)
+  t.is(list.removeAll((val) => true), arr.length)
+  list.add('foobar')
+  t.is(list.getCount(), 1)
+  t.deepEqual(list.toArray(), ['foobar'])
+})
+
 test('LinkedList.removeAt removes element at provided index', t => {
   const arr = [1, 2, 'foo', 'bar']
   const list = new LinkedList(arr)
-  t.true(list.removeAt(0))
+  t.true(list.removeAt(1))
   t.is(list.getCount(), arr.length - 1)
-  t.deepEqual(list.toArray(), [2, 'foo', 'bar'])
+  t.deepEqual(list.toArray(), [1, 'foo', 'bar'])
 })
 
 test('LinkedList.removeAt returns false if no elements were removed', t => {
@@ -111,6 +120,12 @@ test('LinkedList.pop returns and removes last value from list', t => {
   t.deepEqual(list.toArray(), [1, 2, 'foo'])
 })
 
+test('LinkedList.pop on empty list returns undefined', t => {
+  const list = new LinkedList()
+  t.is(list.getCount(), 0)
+  t.is(list.pop(), undefined)
+})
+
 test('LinkedList.enqueue adds new value to end of list', t => {
   const arr = [1, 2, 'foo', 'bar']
   const list = new LinkedList(arr)
@@ -134,4 +149,10 @@ test('LinkedList.dequeue returns and removes first value from list', t => {
   t.is(list.dequeue(), 1)
   t.is(list.getCount(), arr.length - 1)
   t.deepEqual(list.toArray(), [2, 'foo', 'bar'])
+})
+
+test('LinkedList.dequeue on empty list returns undefined', t => {
+  const list = new LinkedList()
+  t.is(list.getCount(), 0)
+  t.is(list.dequeue(), undefined)
 })
