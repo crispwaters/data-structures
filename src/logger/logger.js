@@ -104,7 +104,7 @@ const instances = {}
  * @param {string} name
  * @returns {Logger}
  */
-export const GetLogger = (name) => {
+export const getLogger = (name) => {
   if (!instances[name]) instances[name] = new Logger()
   return instances[name]
 }
@@ -113,6 +113,6 @@ export const GetLogger = (name) => {
  * Deletes an instance of a logger
  * @param {string} name
  */
-export const DeleteLogger = (name) => {
+export const deleteLogger = (name) => {
   delete instances[name]
 }
