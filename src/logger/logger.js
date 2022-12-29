@@ -111,6 +111,8 @@ export const getLogger = (name) => {
 
 /**
  * Deletes an instance of a logger
+ * NOTE: the logger will not be picked up by the garbage collector until all references are removed,
+ * any local variables to the logger will still work until the GC can free up the memory
  * @param {string} name
  */
 export const deleteLogger = (name) => {
