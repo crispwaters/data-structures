@@ -1,4 +1,6 @@
-/** Lo */
+/**
+ * Enumeration of log levels
+ */
 export const LOG_LEVELS = Object.freeze = {
   verbose: 10,
   debug: 20,
@@ -33,7 +35,7 @@ export class Logger {
 
   /**
    * Logs a verbose message
-   * @param  {...any[]} msg 
+   * @param  {...any[]} msg
    */
   verbose (...msg) {
     if (this.#LOG_LEVEL <= LOG_LEVELS.verbose) console.verbose(...msg)
@@ -41,7 +43,7 @@ export class Logger {
 
   /**
    * Logs a debug message
-   * @param  {...any[]} msg 
+   * @param  {...any[]} msg
    */
   debug (...msg) {
     if (this.#LOG_LEVEL <= LOG_LEVELS.debug) console.debug(...msg)
@@ -49,7 +51,7 @@ export class Logger {
 
   /**
    * Logs an info message
-   * @param  {...any[]} msg 
+   * @param  {...any[]} msg
    */
   info (...msg) {
     if (this.#LOG_LEVEL <= LOG_LEVELS.info) console.info(...msg)
@@ -57,7 +59,7 @@ export class Logger {
 
   /**
    * Logs a warn message
-   * @param  {...any[]} msg 
+   * @param  {...any[]} msg
    */
   warn (...msg) {
     if (this.#LOG_LEVEL <= LOG_LEVELS.warn) console.warn(...msg)
@@ -65,7 +67,7 @@ export class Logger {
 
   /**
    * Logs an error message
-   * @param  {...any[]} msg 
+   * @param  {...any[]} msg
    */
   error (...msg) {
     if (this.#LOG_LEVEL <= LOG_LEVELS.error) console.error(...msg)
@@ -89,9 +91,28 @@ export class Logger {
 
   /**
    * Stops a timer and logs the time
-   * @param {string} label Name of timer 
+   * @param {string} label Name of timer
    */
   timeEnd (label) {
     if (this.#LOG_LEVEL <= LOG_LEVELS.timer) console.timeEnd(label)
   }
+}
+
+const instances = {}
+/**
+ * Retrieves an instance of a logger, creates new logger instance if needed
+ * @param {string} name
+ * @returns {Logger}
+ */
+export const GetLogger = (name) => {
+  if (!instances[name]) instances[name] = new Logger()
+  return instances[name]
+}
+
+/**
+ * Deletes an instance of a logger
+ * @param {string} name
+ */
+export const DeleteLogger = (name) => {
+  delete instances[name]
 }
