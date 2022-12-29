@@ -102,7 +102,7 @@ const instances = {}
 /**
  * Retrieves an instance of a logger, creates new logger instance if needed
  * @param {string} name
- * @returns {Logger}
+ * @returns {Logger} Managed instance of {@link Logger}
  */
 export const getLogger = (name) => {
   if (!instances[name]) instances[name] = new Logger()
