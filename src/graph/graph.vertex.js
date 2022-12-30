@@ -60,8 +60,6 @@ export class Vertex {
     for (const { vertex, edge } of [...this.#prev]) {
       vertex.removeEdge(edge)
     }
-    this.#prev.length = 0
-    this.edges.length = 0
     this.#isDeleted = true
   }
 
