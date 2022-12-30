@@ -1,7 +1,7 @@
 /**
  * Enumeration of log levels
  */
-export const LOG_LEVELS = Object.freeze = {
+export const LOG_LEVELS = Object.freeze({
   verbose: 10,
   debug: 20,
   info: 30,
@@ -9,7 +9,7 @@ export const LOG_LEVELS = Object.freeze = {
   error: 50,
   timer: 60,
   none: Infinity
-}
+})
 
 /**
  * Lightweight class for console logging
