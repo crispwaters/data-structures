@@ -28,30 +28,14 @@ export class Path {
    * @returns {Path} Path containing route found via Breadth First Search
    */
   bfs () {
-    const globalVisited = new Set()
-    const q = new LinkedList([{ current: this.start, visited: new Set(globalVisited) }])
-    while (q.getCount() > 0) {
-      /** @type {{ current: Vertex, visited: Set<Vertex>}} */
-      const { current, visited } = q.dequeue()
-      if (globalVisited.has(current)) continue
-      globalVisited.add(current)
-      visited.add(current)
-      if (current === this.finish) {
-        const path = new Path(this.start, this.finish)
-        path.visited = visited
-        path.isPathFound = true
-        path.isTerminated = true
-        return path
+    return this.#bdfs(
+      q => q.dequeue(),
+      (q, visited, edges) => {
+        for (const { target } of edges) {
+          q.enqueue({ current: target, visited: new Set(visited) })
+        }
       }
-      const toVisit = current.edges.filter(edge => !globalVisited.has(edge.target))
-      for (const { target } of toVisit) {
-        q.enqueue({ current: target, visited: new Set(visited) })
-      }
-    }
-    const path = new Path(this.start, this.finish)
-    path.isTerminated = true
-    path.isPathFound = false
-    return path
+    )
   }
 
   /**
@@ -59,11 +43,27 @@ export class Path {
    * @returns {Path} Path containing route found via Depth First Search
    */
   dfs () {
+    return this.#bdfs(
+      s => s.pop(),
+      (s, visited, edges) => {
+        while (edges.length) {
+          const { target } = edges.pop()
+          s.push({ current: target, visited: new Set(visited) })
+        }
+      }
+    )
+  }
+
+  /**
+   * Abstract implementation of BFS and DFS
+   * @param {(list: LinkedList) => { current: Vertex, visited: Set<Vertex> }} getVertex
+   * @param {(list: LinkedList, visited: Set<Vertex>, edges: Edge[]) => void} addVerticies
+   */
+  #bdfs (getVertex, addVerticies) {
     const globalVisited = new Set()
-    const s = new LinkedList([{ current: this.start, visited: new Set(globalVisited) }])
-    while (s.getCount() > 0) {
-      /** @type {{ current: Vertex, visited: Set<Vertex> }} */
-      const { current, visited } = s.pop()
+    const qs = new LinkedList([{ current: this.start, visited: new Set(globalVisited) }])
+    while (qs.getCount() > 0) {
+      const { current, visited } = getVertex(qs)
       if (globalVisited.has(current)) continue
       globalVisited.add(current)
       visited.add(current)
@@ -74,11 +74,7 @@ export class Path {
         path.isTerminated = true
         return path
       }
-      const toVisit = current.edges.filter(edge => !globalVisited.has(edge.target))
-      while (toVisit.length) {
-        const { target } = toVisit.pop()
-        s.push({ current: target, visited: new Set(visited) })
-      }
+      addVerticies(qs, visited, current.edges.filter(edge => !globalVisited.has(edge.target)))
     }
     const path = new Path(this.start, this.finish)
     path.isTerminated = true
