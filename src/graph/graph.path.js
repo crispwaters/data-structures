@@ -48,6 +48,7 @@ export class Path {
       },
       (visited, edges) => {
         for (const { target } of edges) {
+          if (globalVisited.has(target)) continue
           q.enqueue({ current: target, visited: new Set(visited) })
         }
       }
