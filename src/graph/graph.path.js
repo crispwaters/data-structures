@@ -23,31 +23,66 @@ export class Path {
   }
 
   /**
-   * Traverse grid via BFS to find the path containing the least steps to the target
-   * @note On an unweighted graph, if a path is found, it will be the sortest path. On a weighted graph, use Dijkstra or A* to find the shortest path
-   * @returns {Path} Path containing shortest route found via breadth first search
+   * Traverse grid via Breadth First Search to find a path to the target
+   * @note On an unweighted graph, if a path is found, it will be the shortest path. On a weighted graph, use Dijkstra or A* to find the shortest path
+   * @returns {Path} Path containing route found via Breadth First Search
    */
   bfs () {
-    if (this.isTerminated) return this
-    const globalVisited = new Set([this.start])
+    const globalVisited = new Set()
     const q = new LinkedList([{ current: this.start, visited: new Set(globalVisited) }])
     while (q.getCount() > 0) {
       /** @type {{ current: Vertex, visited: Set<Vertex>}} */
       const { current, visited } = q.dequeue()
+      if (globalVisited.has(current)) continue
+      globalVisited.add(current)
+      visited.add(current)
       if (current === this.finish) {
-        this.visited = visited
-        this.isPathFound = true
-        this.isTerminated = true
-        return this
+        const path = new Path(this.start, this.finish)
+        path.visited = visited
+        path.isPathFound = true
+        path.isTerminated = true
+        return path
       }
       const toVisit = current.edges.filter(edge => !globalVisited.has(edge.target))
       for (const { target } of toVisit) {
-        globalVisited.add(target)
-        q.enqueue({ current: target, visited: new Set(visited).add(target) })
+        q.enqueue({ current: target, visited: new Set(visited) })
       }
     }
-    this.isTerminated = true
-    this.isPathFound = false
-    return this
+    const path = new Path(this.start, this.finish)
+    path.isTerminated = true
+    path.isPathFound = false
+    return path
+  }
+
+  /**
+   * Traverse grid vis Depth First Search to find a path to the target
+   * @returns {Path} Path containing route found via Depth First Search
+   */
+  dfs () {
+    const globalVisited = new Set()
+    const s = new LinkedList([{ current: this.start, visited: new Set(globalVisited) }])
+    while (s.getCount() > 0) {
+      /** @type {{ current: Vertex, visited: Set<Vertex> }} */
+      const { current, visited } = s.pop()
+      if (globalVisited.has(current)) continue
+      globalVisited.add(current)
+      visited.add(current)
+      if (current === this.finish) {
+        const path = new Path(this.start, this.finish)
+        path.visited = visited
+        path.isPathFound = true
+        path.isTerminated = true
+        return path
+      }
+      const toVisit = current.edges.filter(edge => !globalVisited.has(edge.target))
+      while (toVisit.length) {
+        const { target } = toVisit.pop()
+        s.push({ current: target, visited: new Set(visited) })
+      }
+    }
+    const path = new Path(this.start, this.finish)
+    path.isTerminated = true
+    path.isPathFound = false
+    return path
   }
 }
