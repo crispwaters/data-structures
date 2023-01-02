@@ -156,3 +156,23 @@ test('LinkedList.dequeue on empty list returns undefined', t => {
   t.is(list.getCount(), 0)
   t.is(list.dequeue(), undefined)
 })
+
+test('LinkedList.first returns first element', t => {
+  const list = new LinkedList([1, 2, 3])
+  t.is(list.first(), 1)
+})
+
+test('LinkedList.first returns undefined on empty list', t => {
+  const list = new LinkedList()
+  t.is(list.first(), undefined)
+})
+
+test('LinkedList.last returns last element', t => {
+  const list = new LinkedList([1, 2, 3])
+  t.is(list.last(), 3)
+})
+
+test('LinkedList.last returns undefined on empty list', t => {
+  const list = new LinkedList()
+  t.is(list.last(), undefined)
+})

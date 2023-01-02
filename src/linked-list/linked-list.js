@@ -44,6 +44,20 @@ export class LinkedList {
   }
 
   /**
+   * @returns {any} first element in list
+   */
+  first () {
+    return this.#head?.val
+  }
+
+  /**
+   * @returns {any} last element in list
+   */
+  last () {
+    return this.#tail?.val
+  }
+
+  /**
    * Adds a new element to the end of the list
    * @param {any} val value to add
    */
