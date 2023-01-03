@@ -46,7 +46,7 @@ export class Path {
         visited.add(current)
         return { current, visited }
       },
-      (visited, edges) => {
+      ({ current: { edges }, visited }) => {
         for (const { target } of edges) {
           if (globalVisited.has(target)) continue
           q.enqueue({ current: target, visited: new Set(visited) })
@@ -78,7 +78,7 @@ export class Path {
         visited.add(current)
         return { current, visited }
       },
-      (visited, edges) => {
+      ({ current: { edges }, visited }) => {
         while (edges.length) {
           const { target } = edges.pop()
           if (globalVisited.has(target)) continue
@@ -92,7 +92,7 @@ export class Path {
    * Abstract search implementation
    * @param {() => boolean} hasNext true if there is another vertex to visit, false otherwise
    * @param {() => { current: Vertex, visited: Set<Vertex> }} getVertex get next vertex to visit
-   * @param {(visited: Set<Vertex>, edges: Edge[]) => void} addVerticies add verticies to collection of possible verticies to visit
+   * @param {({ current: Vertex, visited: Set<Vertex> }) => void} addVerticies add verticies to collection of possible verticies to visit
    */
   search (hasNext, getVertex, addVerticies) {
     while (hasNext()) {
@@ -104,7 +104,7 @@ export class Path {
         path.isTerminated = true
         return path
       }
-      addVerticies(visited, current.edges)
+      addVerticies({ current, visited })
     }
     const path = new Path(this.start, this.finish)
     path.isTerminated = true
