@@ -16,3 +16,13 @@ export class Element {
     this.val = val
   }
 }
+
+export class PriorityElement extends Element {
+  /** @type {number} numeric priority */
+  priority
+
+  constructor (val, priority) {
+    super(val)
+    this.priority = priority
+  }
+}

@@ -1,5 +1,5 @@
 import { getLogger, LOG_LEVELS } from '../logger/logger.js'
-import { Element } from './linked-list.element.js'
+import { Element, PriorityElement } from './linked-list.element.js'
 
 export const LINKED_LIST_LOGGER_KEY = 'LINKED_LIST_LOGGER'
 
@@ -185,6 +185,72 @@ export class LinkedList {
     const toReturn = this.#head.val
     this.#removeElement(this.#head)
     return toReturn
+  }
+  // #endregion
+
+  // #region PriorityQueue functions
+  /**
+   * Adds a value with priority
+   * @param {any} val value to add
+   * @param {number} priority numeric priority
+   */
+  addMinPriority (val, priority) {
+    const element = new PriorityElement(val, priority)
+    let cursor = this.#head
+    while (cursor) {
+      if (!(cursor instanceof PriorityElement)) break
+      if (cursor.priority > priority) break
+      cursor = cursor.next
+    }
+    if (!this.#head) {
+      this.#head = element
+      this.#tail = element
+    } else if (!cursor) {
+      this.#tail.next = element
+      element.prev = this.#tail
+      this.#tail = element
+    } else {
+      if (cursor === this.#head) this.#head = element
+      else {
+        element.prev = cursor.prev
+        element.prev.next = element
+      }
+      element.next = cursor
+      cursor.prev = element
+    }
+    this.#count++
+  }
+
+  /**
+   * Adds a value with priority
+   * @param {any} val value to add
+   * @param {number} priority numeric priority
+   */
+  addMaxPriority (val, priority) {
+    const element = new PriorityElement(val, priority)
+    let cursor = this.#tail
+    while (cursor) {
+      if (!(cursor instanceof PriorityElement)) break
+      if (cursor.priority < priority) break
+      cursor = cursor.prev
+    }
+    if (!this.#head) {
+      this.#head = element
+      this.#tail = element
+    } else if (!cursor) {
+      this.#head.prev = element
+      element.next = this.#head
+      this.#head = element
+    } else {
+      if (cursor === this.#tail) this.#tail = element
+      else {
+        element.next = cursor.next
+        element.next.prev = element
+      }
+      element.prev = cursor
+      cursor.next = element
+    }
+    this.#count++
   }
   // #endregion
 

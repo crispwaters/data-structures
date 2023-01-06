@@ -176,3 +176,45 @@ test('LinkedList.last returns undefined on empty list', t => {
   const list = new LinkedList()
   t.is(list.last(), undefined)
 })
+
+test('LinkedList.addMinPriority adds elements in priority order', t => {
+  const list = new LinkedList()
+  list.addMinPriority('foo', 1)
+  list.addMinPriority('bar', 5)
+  list.addMinPriority('foobar', 3)
+  list.addMinPriority('barfoo', 6)
+  list.addMinPriority('f', 0)
+  t.is(list.getCount(), 5)
+  t.deepEqual(list.toArray(), ['f', 'foo', 'foobar', 'bar', 'barfoo'])
+})
+
+test('LinkedList.addMinPriority adds elements before non-priority elements', t => {
+  const list = new LinkedList(['priorityless'])
+  list.addMinPriority('foo', 3)
+  list.addMinPriority('bar', 1)
+  list.addMinPriority('nice', 69)
+  list.addMinPriority('blaze it', 420)
+  t.is(list.getCount(), 5)
+  t.deepEqual(list.toArray(), ['bar', 'foo', 'nice', 'blaze it', 'priorityless'])
+})
+
+test('LinkedList.addMaxPriority adds elements in priority order', t => {
+  const list = new LinkedList()
+  list.addMaxPriority('foo', 1)
+  list.addMaxPriority('bar', 5)
+  list.addMaxPriority('foobar', 3)
+  list.addMaxPriority('barfoo', 6)
+  list.addMaxPriority('f', 0)
+  t.is(list.getCount(), 5)
+  t.deepEqual(list.toArray(), ['f', 'foo', 'foobar', 'bar', 'barfoo'])
+})
+
+test('LinkedList.addMaxPriority adds elements after non-priority elements', t => {
+  const list = new LinkedList(['priorityless'])
+  list.addMaxPriority('foo', 3)
+  list.addMaxPriority('bar', 1)
+  list.addMaxPriority('nice', 69)
+  list.addMaxPriority('blaze it', 420)
+  t.is(list.getCount(), 5)
+  t.deepEqual(list.toArray(), ['priorityless', 'bar', 'foo', 'nice', 'blaze it'])
+})
